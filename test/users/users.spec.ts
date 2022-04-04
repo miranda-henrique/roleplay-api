@@ -246,7 +246,7 @@ test.group('User', (group) => {
         assert.equal(body.status, 422);
     });
 
-    test.only('it should return 422 when an invalid update avatar link is provided', async (assert) => {
+    test('it should return 422 when an invalid update avatar link is provided', async (assert) => {
         const { id, password, email } = await UserFactory.create();
 
         const { body } = await supertest(BASE_URL)
