@@ -30,7 +30,7 @@ Route.post('/forgot-password', 'PasswordsController.forgotPassword');
 Route.post('/reset-password', 'PasswordsController.resetPassword');
 Route.post('/sessions', 'SessionsController.store');
 
-Route.put('/users/:id', 'UsersController.update');
+Route.put('/users/:id', 'UsersController.update').middleware('auth');
 
 Route.delete('/sessions', 'SessionsController.destroy');
 

@@ -4,6 +4,7 @@ import test from 'japa';
 import supertest from 'supertest';
 
 const BASE_URL = `http://${process.env.HOST}:${process.env.PORT}`;
+let token;
 
 test.group('Session', (group) => {
     test('it should authenticate an user', async (assert) => {
@@ -87,7 +88,7 @@ test.group('Session', (group) => {
             .expect(200);
     });
 
-    test.only('it should revoke token when users signs out', async (assert) => {
+    test('it should revoke token when users signs out', async (assert) => {
         const plainTextPassword = 'testPassword';
         const user = await UserFactory.merge({ password: plainTextPassword }).create();
         const { email } = user;
@@ -105,8 +106,6 @@ test.group('Session', (group) => {
         const tokenBeforeSignOut = await Database.query()
             .select('*')
             .from('api_tokens');
-        console.log({ tokenBeforeSignOut });
-
 
         await supertest(BASE_URL)
             .delete('/sessions')
@@ -117,9 +116,9 @@ test.group('Session', (group) => {
             .select('*')
             .from('api_tokens');
 
-        console.log({ tokenAfterSignOut });
         assert.isEmpty(tokenAfterSignOut);
     });
+
 
     group.beforeEach(async () => {
         await Database.beginGlobalTransaction();
