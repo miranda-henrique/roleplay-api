@@ -25,11 +25,13 @@ class UsersController {
         return response.created({ user });
     }
 
-    public async update({ request, response }: HttpContextContract) {
+    public async update({ request, response, bouncer }: HttpContextContract) {
         const userPayload = await request.validate(UpdateUserValidator);
 
         const id = request.param('id');
         const user = await User.findOrFail(id);
+
+        await bouncer.authorize('updateUser', user);
 
         const { email, avatar, password } = userPayload;
         user.email = email;
