@@ -302,6 +302,14 @@ test.group('User', (group) => {
         token = apiToken.token;
     });
 
+    group.after(async () => {
+        await supertest(BASE_URL)
+            .delete('/sessions')
+            .set({
+                'Authorization': `Bearer ${token}`,
+            });
+    });
+
     group.beforeEach(async () => {
         await Database.beginGlobalTransaction();
     });
