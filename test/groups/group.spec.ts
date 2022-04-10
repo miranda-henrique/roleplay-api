@@ -61,10 +61,8 @@ test.group('Group', (group) => {
 
     group.before(async () => {
         const plainTextPassword = 'testPassword';
-        const user = await UserFactory.merge({ password: plainTextPassword }).create();
-        const { email } = user;
-
-        globalUser = user;
+        globalUser = await UserFactory.merge({ password: plainTextPassword }).create();
+        const { email } = globalUser;
 
         const { body } = await supertest(BASE_URL)
             .post('/sessions')

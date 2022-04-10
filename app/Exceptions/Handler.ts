@@ -53,6 +53,13 @@ export default class ExceptionHandler extends HttpExceptionHandler {
         status: 400,
         errors: error['messages']?.errors ? error['messages'].errors : '',
       });
+    } else if (error.code === 'E_ROUTE_NOT_FOUND') {
+      return context.response.status(error.status).send({
+        code: 'BAD_REQUEST',
+        message: 'route not found',
+        status: 404,
+        errors: error['messages']?.errors ? error['messages'].errors : '',
+      });
     }
 
     return super.handle(error, context);
